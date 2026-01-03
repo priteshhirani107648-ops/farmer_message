@@ -104,6 +104,7 @@
     .btn-generate { background: var(--primary); color: #fff; }
     .btn-copy { background: #eef2ff; color: #1d4ed8; }
     .btn-wa { background: var(--secondary); color: #fff; }
+    .btn-clear { background: #fff3f3; color: #c53030; }
 
     .footer {
       text-align: center;
@@ -130,9 +131,7 @@
 
   <div class="card">
     <label>શાકભાજી અને ભાવ</label>
-
     <div id="items"></div>
-
     <button class="btn btn-add" onclick="addItem()">➕ વધુ શાક ઉમેરો</button>
   </div>
 
@@ -143,7 +142,8 @@
     <textarea id="message" readonly></textarea>
 
     <button class="btn btn-copy" onclick="copyText()">📋 કૉપી કરો</button>
-      </div>
+    <button class="btn btn-clear" onclick="clearAll()">🧹 ક્લિયર કરો</button>
+  </div>
 
   <div class="footer">
     © Hirani Tech | Developed by <strong>Pritesh Hirani</strong>
@@ -197,7 +197,6 @@
       </select>
 
       <input class="other-input" placeholder="શાકનું નામ લખો">
-
       <input class="price" placeholder="ભાવ ₹">
     `;
     document.getElementById("items").appendChild(row);
@@ -205,8 +204,9 @@
 
   function toggleOther(select) {
     const row = select.parentElement;
-    const otherInput = row.querySelector(".other-input");
-    otherInput.style.display = select.value === "OTHER" ? "block" : "none";
+    const other = row.querySelector(".other-input");
+    other.style.display = select.value === "OTHER" ? "block" : "none";
+    if (select.value !== "OTHER") other.value = "";
   }
 
   function generate() {
@@ -222,9 +222,9 @@
     rows.forEach(row => {
       const select = row.querySelector(".item");
       const other = row.querySelector(".other-input");
-      const price = row.querySelector(".price").value;
+      const price = row.querySelector(".price").value.trim();
+      const veg = select.value === "OTHER" ? other.value.trim() : select.value;
 
-      let veg = select.value === "OTHER" ? other.value.trim() : select.value;
       if (veg && price) {
         msg += `\n${getEmoji(veg)} ${veg} : ₹${price}`;
       }
@@ -241,9 +241,15 @@
     alert("સંદેશ કૉપી થયો ✅");
   }
 
+ 
+  function clearAll() {
+    document.getElementById("farmer").value = "";
+    document.getElementById("message").value = "";
+    document.getElementById("items").innerHTML = "";
+    addItem(); // fresh empty row
+  }
 
-
-  // Add first row by default
+  // Initialize with one row
   addItem();
 </script>
 
