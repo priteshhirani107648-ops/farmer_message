@@ -28,8 +28,8 @@
 .emoji-fg{z-index:2}
 
 .emoji{position:absolute;animation:float linear infinite;}
-.bg{font-size:34px;opacity:0.20;}
-.fg{font-size:50px;opacity:0.30;animation:floatSide linear infinite;}
+.bg{font-size:34px;opacity:0.60;}
+.fg{font-size:50px;opacity:0.15;animation:floatSide linear infinite;}
 
 @keyframes float{
   from{transform:translateY(110vh) rotate(0deg)}
@@ -334,6 +334,8 @@ function generate(){
     const farmer=farmerSelect.value==="OTHER"?farmerOther.value:farmerSelect.value;
     msg=`નમસ્તે ${farmer} 🙏
 તારીખ: ${getDate()}
+
+આજના ભાવ નીચે મુજબ છે:
 
 `;
     sellerItems.querySelectorAll(".row").forEach(r=>{
