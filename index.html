@@ -186,7 +186,7 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 
 <div class="header-row">
   <div>શાક</div><div>ભાવ</div><div>વજન</div>
-  <div>બોક્સ</div><div>કમિશન %</div><div>બોક્સ ₹</div>
+  <div>બોક્સ</div><div>કમિશન %</div><div>મજૂરી ₹</div>
 </div>
 
 <div id="buyerItems"></div>
@@ -324,7 +324,7 @@ function generate(){
     const other=+otherExpense.value||0;
     msg+=`માલ કુલ: ₹${base}
 કુલ કમિશન: ₹${comm}
-બોક્સ ચાર્જ: ₹${box}
+મજૂરી ચાર્જ: ₹${box}
 અન્ય ખર્ચ: ₹${other}
 
 કુલ ચૂકવવાની રકમ: ₹${base+comm+box+other}
@@ -377,3 +377,4 @@ addSellerItem();
 
 </body>
 </html>
+
