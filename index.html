@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Nilkanth Fruits & Vegetables</title>
+
+  <style>
+    :root {
+      --primary: #1f7a3f;
+      --secondary: #25D366;
+      --bg: #f5f7f9;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #666;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      max-width: 480px;
+      margin: auto;
+      padding: 14px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 14px 10px 10px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .header p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: none;
+      background: #fafafa;
+    }
+
+    .item-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .item-row select,
+    .item-row input {
+      flex: 1;
+    }
+
+    .other-input {
+      display: none;
+    }
+
+    .btn {
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .btn-add { background: #eef7f1; color: var(--primary); }
+    .btn-generate { background: var(--primary); color: #fff; }
+    .btn-copy { background: #eef2ff; color: #1d4ed8; }
+    .btn-wa { background: var(--secondary); color: #fff; }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 18px 0 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <h1>🥦 નિલકંઠ ફ્રૂટ્સ એન્ડ વેજીટેબલ્સ</h1>
+    <p>દૈનિક ભાવ સંદેશ જનરેટર</p>
+  </div>
+
+  <div class="card">
+    <label>ખેડૂતનું નામ</label>
+    <input id="farmer" placeholder="રામભાઈ">
+  </div>
+
+  <div class="card">
+    <label>શાકભાજી અને ભાવ</label>
+
+    <div id="items"></div>
+
+    <button class="btn btn-add" onclick="addItem()">➕ વધુ શાક ઉમેરો</button>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-generate" onclick="generate()">📄 સંદેશ બનાવો</button>
+
+    <label style="margin-top:14px">WhatsApp સંદેશ</label>
+    <textarea id="message" readonly></textarea>
+
+    <button class="btn btn-copy" onclick="copyText()">📋 કૉપી કરો</button>
+      </div>
+
+  <div class="footer">
+    © Hirani Tech | Developed by <strong>Pritesh Hirani</strong>
+  </div>
+
+</div>
+
+<script>
+  function getISTDate() {
+    return new Date().toLocaleDateString("en-GB", {
+      timeZone: "Asia/Kolkata",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+  }
+
+  function getEmoji(veg) {
+    const map = {
+      "ટામેટા": "🍅",
+      "મરચાં": "🌶️",
+      "બટાકા": "🥔",
+      "ડુંગળી": "🧅",
+      "કાકડી": "🥒",
+      "ગાજર": "🥕",
+      "ભીંડા": "🥬",
+      "રીંગણ": "🍆",
+      "કોબી": "🥬",
+      "ફૂલકોબી": "🥦"
+    };
+    return map[veg] || "🥬";
+  }
+
+  function addItem() {
+    const row = document.createElement("div");
+    row.className = "item-row";
+    row.innerHTML = `
+      <select class="item" onchange="toggleOther(this)">
+        <option value="">શાક પસંદ કરો</option>
+        <option>ટામેટા</option>
+        <option>મરચાં</option>
+        <option>બટાકા</option>
+        <option>ડુંગળી</option>
+        <option>કાકડી</option>
+        <option>ગાજર</option>
+        <option>ભીંડા</option>
+        <option>રીંગણ</option>
+        <option>કોબી</option>
+        <option>ફૂલકોબી</option>
+        <option value="OTHER">અન્ય</option>
+      </select>
+
+      <input class="other-input" placeholder="શાકનું નામ લખો">
+
+      <input class="price" placeholder="ભાવ ₹">
+    `;
+    document.getElementById("items").appendChild(row);
+  }
+
+  function toggleOther(select) {
+    const row = select.parentElement;
+    const otherInput = row.querySelector(".other-input");
+    otherInput.style.display = select.value === "OTHER" ? "block" : "none";
+  }
+
+  function generate() {
+    const farmer = document.getElementById("farmer").value.trim();
+    const rows = document.querySelectorAll(".item-row");
+    const date = getISTDate();
+
+    let msg = `નમસ્તે ${farmer} 🙏
+તારીખ: ${date}
+
+આજના ભાવ નીચે મુજબ છે:\n`;
+
+    rows.forEach(row => {
+      const select = row.querySelector(".item");
+      const other = row.querySelector(".other-input");
+      const price = row.querySelector(".price").value;
+
+      let veg = select.value === "OTHER" ? other.value.trim() : select.value;
+      if (veg && price) {
+        msg += `\n${getEmoji(veg)} ${veg} : ₹${price}`;
+      }
+    });
+
+    msg += `\n\n– નિલકંઠ ફ્રૂટ્સ એન્ડ વેજીટેબલ્સ`;
+    document.getElementById("message").value = msg;
+  }
+
+  function copyText() {
+    const t = document.getElementById("message");
+    t.select();
+    document.execCommand("copy");
+    alert("સંદેશ કૉપી થયો ✅");
+  }
+
+
+
+  // Add first row by default
+  addItem();
+</script>
+
+</body>
+</html>
