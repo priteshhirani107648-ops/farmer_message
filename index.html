@@ -75,6 +75,7 @@ textarea{
 }
 .row>*{flex:1}
 .other{display:none}
+.qty{display:none}
 .btn{
   border:none;
   font-weight:700;
@@ -111,16 +112,16 @@ textarea{
 
 <div class="header">
   <h1>🥦 નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ</h1>
-  <p>દૈનિક ભાવ અને બિલ જનરેટર</p>
+  <p>ભાવ સૂચિ અને બિલ જનરેટર</p>
 </div>
 
 <!-- MODE -->
 <div class="card">
-  <label>મોડ પસંદ કરો</label>
-  <div class="mode">
-    <button id="normalBtn" class="active" onclick="setMode('normal')">🟢 Normal</button>
-    <button id="advBtn" onclick="setMode('advanced')">🔵 Advanced (Bill)</button>
-  </div>
+<label>મોડ પસંદ કરો</label>
+<div class="mode">
+  <button id="normalBtn" class="active" onclick="setMode('normal')">🟢 Normal</button>
+  <button id="advBtn" onclick="setMode('advanced')">🔵 Advanced (Bill)</button>
+</div>
 </div>
 
 <!-- FARMER -->
@@ -162,105 +163,133 @@ textarea{
 </div>
 
 <script>
-let MODE="normal";
+let MODE = "normal";
 
+/* MODE SWITCH */
 function setMode(m){
-  MODE=m;
-  normalBtn.classList.toggle("active",m==="normal");
-  advBtn.classList.toggle("active",m==="advanced");
-  clearAll();
+  MODE = m;
+  normalBtn.classList.toggle("active", m==="normal");
+  advBtn.classList.toggle("active", m==="advanced");
+  updateQtyVisibility();
 }
 
+/* DATE */
 function getISTDate(){
   return new Date().toLocaleDateString("en-GB",{timeZone:"Asia/Kolkata"});
 }
 
+/* FARMER */
 function toggleFarmerOther(){
   farmerOther.style.display = farmerSelect.value==="OTHER"?"block":"none";
   if(farmerSelect.value!=="OTHER") farmerOther.value="";
 }
 
+/* EMOJI */
 function getEmoji(v){
-  const m={
-    "ટામેટા":"🍅","મરચાં":"🌶️","બટાકા":"🥔","ડુંગળી":"🧅",
-    "કાકડી":"🥒","ગાજર":"🥕","રીંગણ":"🍆",
-    "બાજરીયા રીંગણ":"🍆","પેતરગાલા":"🎃"
+  const map={
+    "ટામેટા":"🍅",
+    "મરચાં":"🌶️",
+    "બટાકા":"🥔",
+    "ડુંગળી":"🧅",
+    "કાકડી":"🥒",
+    "ગાજર":"🥕",
+    "રીંગણ":"🍆",
+    "બાજરીયા રીંગણ":"🍆",
+    "પેતરગાલા":"🎃"
   };
-  return m[v]||"🥬";
+  return map[v]||"🥬";
 }
 
+/* ADD ITEM */
 function addItem(){
   const r=document.createElement("div");
   r.className="row";
   r.innerHTML=`
-  <select class="veg" onchange="toggleVegOther(this)">
-    <option value="">શાક</option>
-    <option>ટામેટા</option>
-    <option>મરચાં</option>
-    <option>બટાકા</option>
-    <option>ડુંગળી</option>
-    <option>કાકડી</option>
-    <option>ગાજર</option>
-    <option>રીંગણ</option>
-    <option>બાજરીયા રીંગણ</option>
-    <option>પાલક</option>
-    <option>દૂધી</option>
-    <option>પેતરગાલા</option>
-    <option value="OTHER">અન્ય</option>
-  </select>
-  <input class="other" placeholder="શાકનું નામ">
-  <input class="price" placeholder="ભાવ ₹">
-  ${MODE==="advanced"?'<input class="qty" placeholder="વજન (કિ.ગ્રા)">':''}
+    <select class="veg" onchange="toggleVegOther(this)">
+      <option value="">શાક</option>
+      <option>ટામેટા</option>
+      <option>મરચાં</option>
+      <option>બટાકા</option>
+      <option>ડુંગળી</option>
+      <option>કાકડી</option>
+      <option>ગાજર</option>
+      <option>રીંગણ</option>
+      <option>બાજરીયા રીંગણ</option>
+      <option>પાલક</option>
+      <option>દૂધી</option>
+      <option>પેતરગાલા</option>
+      <option value="OTHER">અન્ય</option>
+    </select>
+    <input class="other" placeholder="શાકનું નામ">
+    <input class="price" placeholder="ભાવ ₹">
+    <input class="qty" placeholder="વજન (કિ.ગ્રા)">
   `;
   items.appendChild(r);
+  updateQtyVisibility();
 }
 
-function toggleVegOther(s){
-  const o=s.parentElement.querySelector(".other");
-  o.style.display=s.value==="OTHER"?"block":"none";
-  if(s.value!=="OTHER") o.value="";
+/* TOGGLE OTHER VEG */
+function toggleVegOther(sel){
+  const o=sel.parentElement.querySelector(".other");
+  o.style.display = sel.value==="OTHER"?"block":"none";
+  if(sel.value!=="OTHER") o.value="";
 }
 
+/* SHOW / HIDE QTY */
+function updateQtyVisibility(){
+  document.querySelectorAll(".qty").forEach(q=>{
+    q.style.display = MODE==="advanced"?"block":"none";
+    if(MODE==="normal") q.value="";
+  });
+}
+
+/* GENERATE MESSAGE (FIXED) */
 function generate(){
-  const farmer=farmerSelect.value==="OTHER"?farmerOther.value:farmerSelect.value;
+  const farmer = farmerSelect.value==="OTHER"
+    ? farmerOther.value.trim()
+    : farmerSelect.value;
+
   let msg=`નમસ્તે ${farmer} 🙏
 તારીખ: ${getISTDate()}
 
 `;
-  let grand=0;
 
-  items.querySelectorAll(".row").forEach(r=>{
-    let v=r.querySelector(".veg").value==="OTHER"
-      ?r.querySelector(".other").value
-      :r.querySelector(".veg").value;
-    let p=Number(r.querySelector(".price").value||0);
+  let grandTotal=0;
 
-    if(!v||!p) return;
+  document.querySelectorAll("#items .row").forEach(r=>{
+    const vegSel=r.querySelector(".veg");
+    const other=r.querySelector(".other");
+    const price=Number(r.querySelector(".price").value||0);
+
+    const veg = vegSel.value==="OTHER" ? other.value.trim() : vegSel.value;
+    if(!veg || !price) return;
 
     if(MODE==="normal"){
-      msg+=`${getEmoji(v)} ${v} : ₹${p}\n`;
-    }else{
-      let q=Number(r.querySelector(".qty").value||0);
-      let t=p*q;
-      grand+=t;
-      msg+=`${getEmoji(v)} ${v}\n  ભાવ ₹${p} × ${q}kg = ₹${t}\n`;
+      msg += `${getEmoji(veg)} ${veg} : ₹${price}\n`;
+    } else {
+      const qty=Number(r.querySelector(".qty").value||0);
+      const total=price*qty;
+      grandTotal+=total;
+      msg += `${getEmoji(veg)} ${veg}\n  ભાવ ₹${price} × ${qty} કિ.ગ્રા = ₹${total}\n`;
     }
   });
 
   if(MODE==="advanced"){
-    msg+=`\nકુલ રકમ: ₹${grand}\n`;
+    msg += `\nકુલ રકમ: ₹${grandTotal}\n`;
   }
 
-  msg+=`\n– નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ`;
+  msg += `\n– નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ`;
   message.value=msg;
 }
 
+/* COPY */
 function copyText(){
   message.select();
   document.execCommand("copy");
   alert("સંદેશ કૉપી થયો ✅");
 }
 
+/* CLEAR */
 function clearAll(){
   farmerSelect.value="";
   farmerOther.value="";
@@ -270,6 +299,7 @@ function clearAll(){
   addItem();
 }
 
+/* INIT */
 addItem();
 </script>
 </body>
