@@ -76,6 +76,7 @@ textarea{
 .row>*{flex:1}
 .other{display:none}
 .qty{display:none}
+.price-to{display:none}
 .btn{
   border:none;
   font-weight:700;
@@ -163,14 +164,14 @@ textarea{
 </div>
 
 <script>
-let MODE = "normal";
+let MODE="normal";
 
-/* MODE SWITCH */
+/* MODE */
 function setMode(m){
-  MODE = m;
-  normalBtn.classList.toggle("active", m==="normal");
-  advBtn.classList.toggle("active", m==="advanced");
-  updateQtyVisibility();
+  MODE=m;
+  normalBtn.classList.toggle("active",m==="normal");
+  advBtn.classList.toggle("active",m==="advanced");
+  updateFields();
 }
 
 /* DATE */
@@ -187,15 +188,9 @@ function toggleFarmerOther(){
 /* EMOJI */
 function getEmoji(v){
   const map={
-    "ટામેટા":"🍅",
-    "મરચાં":"🌶️",
-    "બટાકા":"🥔",
-    "ડુંગળી":"🧅",
-    "કાકડી":"🥒",
-    "ગાજર":"🥕",
-    "રીંગણ":"🍆",
-    "બાજરીયા રીંગણ":"🍆",
-    "પેતરગાલા":"🎃"
+    "ટામેટા":"🍅","મરચાં":"🌶️","બટાકા":"🥔","ડુંગળી":"🧅",
+    "કાકડી":"🥒","ગાજર":"🥕","રીંગણ":"🍆",
+    "બાજરીયા રીંગણ":"🍆","પેતરગાલા":"🎃"
   };
   return map[v]||"🥬";
 }
@@ -221,29 +216,34 @@ function addItem(){
       <option value="OTHER">અન્ય</option>
     </select>
     <input class="other" placeholder="શાકનું નામ">
-    <input class="price" placeholder="ભાવ ₹">
+    <input class="price-from" placeholder="ભાવ ₹">
+    <input class="price-to" placeholder="થી ₹">
     <input class="qty" placeholder="વજન (કિ.ગ્રા)">
   `;
   items.appendChild(r);
-  updateQtyVisibility();
+  updateFields();
 }
 
-/* TOGGLE OTHER VEG */
+/* TOGGLES */
 function toggleVegOther(sel){
   const o=sel.parentElement.querySelector(".other");
-  o.style.display = sel.value==="OTHER"?"block":"none";
+  o.style.display=sel.value==="OTHER"?"block":"none";
   if(sel.value!=="OTHER") o.value="";
 }
 
-/* SHOW / HIDE QTY */
-function updateQtyVisibility(){
-  document.querySelectorAll(".qty").forEach(q=>{
-    q.style.display = MODE==="advanced"?"block":"none";
-    if(MODE==="normal") q.value="";
+function updateFields(){
+  document.querySelectorAll("#items .row").forEach(r=>{
+    r.querySelector(".qty").style.display = MODE==="advanced"?"block":"none";
+    r.querySelector(".price-to").style.display = MODE==="normal"?"block":"none";
+    if(MODE==="advanced"){
+      r.querySelector(".price-to").value="";
+    } else {
+      r.querySelector(".qty").value="";
+    }
   });
 }
 
-/* GENERATE MESSAGE (FIXED) */
+/* GENERATE */
 function generate(){
   const farmer = farmerSelect.value==="OTHER"
     ? farmerOther.value.trim()
@@ -254,28 +254,32 @@ function generate(){
 
 `;
 
-  let grandTotal=0;
+  let grand=0;
 
   document.querySelectorAll("#items .row").forEach(r=>{
-    const vegSel=r.querySelector(".veg");
-    const other=r.querySelector(".other");
-    const price=Number(r.querySelector(".price").value||0);
+    const veg = r.querySelector(".veg").value==="OTHER"
+      ? r.querySelector(".other").value.trim()
+      : r.querySelector(".veg").value;
 
-    const veg = vegSel.value==="OTHER" ? other.value.trim() : vegSel.value;
-    if(!veg || !price) return;
+    const pFrom = r.querySelector(".price-from").value;
+    const pTo = r.querySelector(".price-to").value;
+
+    if(!veg || !pFrom) return;
 
     if(MODE==="normal"){
-      msg += `${getEmoji(veg)} ${veg} : ₹${price}\n`;
+      msg += `${getEmoji(veg)} ${veg} : ₹${pFrom}`;
+      if(pTo) msg += ` - ₹${pTo}`;
+      msg += `\n`;
     } else {
-      const qty=Number(r.querySelector(".qty").value||0);
-      const total=price*qty;
-      grandTotal+=total;
-      msg += `${getEmoji(veg)} ${veg}\n  ભાવ ₹${price} × ${qty} કિ.ગ્રા = ₹${total}\n`;
+      const qty = Number(r.querySelector(".qty").value||0);
+      const total = Number(pFrom)*qty;
+      grand += total;
+      msg += `${getEmoji(veg)} ${veg}\n  ભાવ ₹${pFrom} × ${qty} કિ.ગ્રા = ₹${total}\n`;
     }
   });
 
   if(MODE==="advanced"){
-    msg += `\nકુલ રકમ: ₹${grandTotal}\n`;
+    msg += `\nકુલ રકમ: ₹${grand}\n`;
   }
 
   msg += `\n– નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ`;
