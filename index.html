@@ -185,8 +185,8 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 <input id="buyerOther" class="other" placeholder="ખરીદદારનું નામ લખો">
 
 <div class="header-row">
-  <div>શાક</div><div>ભાવ</div><div>વજન</div>
-  <div>બોક્સ</div><div>કમિશન %</div><div>મજૂરી ₹</div>
+  <div>શાક</div><div>બોક્સ</div><div>વજન</div><div>ભાવ</div>
+  <div>કમિશન %</div><div>મજૂરી ₹</div>
 </div>
 
 <div id="buyerItems"></div>
@@ -279,9 +279,9 @@ function addBuyerItem(){
   r.innerHTML=`
     ${vegSelect()}
     <input class="other" placeholder="આઇટમ નામ">
-    <input class="price" placeholder="ભાવ">
+	<input class="boxes" placeholder="બોક્સ">
     <input class="qty" placeholder="વજન">
-    <input class="boxes" placeholder="બોક્સ">
+    <input class="price" placeholder="ભાવ">
     <input class="comm" value="7">
     <input class="boxrate" value="4">
   `;
@@ -377,4 +377,3 @@ addSellerItem();
 
 </body>
 </html>
-
