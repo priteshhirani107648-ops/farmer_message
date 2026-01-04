@@ -127,10 +127,10 @@ textarea{min-height:240px;resize:none;background:#fafafa}
   border-radius:999px;
   color:var(--muted);
 }
-
 .festival-switch{
   display: none;
 }
+
 .header{
   padding-top: env(safe-area-inset-top);
   padding-top: calc(env(safe-area-inset-top) + 14px);
@@ -170,6 +170,15 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 <div class="header">
   <h1>🥦 નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ</h1>
   <p>ભાવ • બિલ • ખરીદદાર • WhatsApp</p>
+</div>
+<div id="festivalMessage" style="
+  text-align:center;
+  font-weight:700;
+  font-size:14px;
+  margin-top:6px;
+  color:var(--green);
+  display:none;
+">
 </div>
 
 
@@ -316,44 +325,195 @@ let MANUAL_THEME = false;
 
 /* 🎉 FESTIVAL THEMES */
 const THEMES={
- Default:{green:"#1f7a3f",bg:"#f4f6f8",emoji:["🥦","🍅","🥕"]},
-RepublicDay:{green:"#0f172a",bg:"#eff6ff",emoji:["🇮🇳","🪷","🕊️"]},
-IndependenceDay:{green:"#15803d",bg:"#ecfdf5",emoji:["🇮🇳","🪷","🕊️"]},
-GandhiJayanti:{green:"#334155",bg:"#f8fafc",emoji:["🕊️","🙏","🧘"]},
+ 
+Default:{
+  green:"#1f7a3f",
+  bg:"#f4f6f8",
+  emoji:["🥦","🍅","🥕"],
+  message:"🙏 Welcome • Wishing you a prosperous day 🙏"
+},
 
-Makar:{green:"#d97706",bg:"#fffbeb",emoji:["🪁","☀️","🌾"]},
-Lohri:{green:"#b91c1c",bg:"#fff1f2",emoji:["🔥","🌾","🪵"]},
-Pongal:{green:"#15803d",bg:"#f0fdf4",emoji:["🌾","🥥","☀️"]},
+RepublicDay:{
+  green:"#0f172a",
+  bg:"#eff6ff",
+  emoji:["🇮🇳","🪷","🕊️"],
+  message:"🇮🇳 Happy Republic Day 🇮🇳"
+},
 
-VasantPanchami:{green:"#ca8a04",bg:"#fefce8",emoji:["🌼","📚","🪔"]},
-Shivratri:{green:"#0f172a",bg:"#f1f5f9",emoji:["🔱","🕉️","🌙"]},
+IndependenceDay:{
+  green:"#15803d",
+  bg:"#ecfdf5",
+  emoji:["🇮🇳","🪷","🕊️"],
+  message:"🇮🇳 Happy Independence Day 🇮🇳"
+},
 
-Holi:{green:"#db2777",bg:"#fff1f2",emoji:["🎨","🌈","💥"]},
+GandhiJayanti:{
+  green:"#334155",
+  bg:"#f8fafc",
+  emoji:["🕊️","🙏","🧘"],
+  message:"🕊️ Gandhi Jayanti • Truth & Non-Violence 🕊️"
+},
 
-RamNavami:{green:"#ea580c",bg:"#fff7ed",emoji:["🏹","🕉️","🌸"]},
-HanumanJayanti:{green:"#b91c1c",bg:"#fff7ed",emoji:["🚩","💪","🕉️"]},
-Ugadi:{green:"#166534",bg:"#f0fdf4",emoji:["🌿","🥭","🪔"]},
+Makar:{
+  green:"#d97706",
+  bg:"#fffbeb",
+  emoji:["🪁","☀️","🌾"],
+  message:"🪁 Happy Makar Sankranti 🪁"
+},
 
-AkshayaTritiya:{green:"#ca8a04",bg:"#fffbeb",emoji:["💰","🪔","🌸"]},
-BuddhaPurnima:{green:"#0f766e",bg:"#f0fdfa",emoji:["☸️","🕊️","🌕"]},
+Lohri:{
+  green:"#b91c1c",
+  bg:"#fff1f2",
+  emoji:["🔥","🌾","🪵"],
+  message:"🔥 Happy Lohri 🔥"
+},
 
-RathYatra:{green:"#7c2d12",bg:"#fff7ed",emoji:["🛕","🚩","🙏"]},
-GuruPurnima:{green:"#334155",bg:"#f8fafc",emoji:["📿","🙏","🌕"]},
+Pongal:{
+  green:"#15803d",
+  bg:"#f0fdf4",
+  emoji:["🌾","🥥","☀️"],
+  message:"🌾 Happy Pongal 🌾"
+},
 
-RakshaBandhan:{green:"#be185d",bg:"#fdf2f8",emoji:["🧵","💖","🎁"]},
-Janmashtami:{green:"#1e40af",bg:"#eff6ff",emoji:["🦚","🪈","👶"]},
+VasantPanchami:{
+  green:"#ca8a04",
+  bg:"#fefce8",
+  emoji:["🌼","📚","🪔"],
+  message:"🌼 Happy Vasant Panchami 🌼"
+},
 
-GaneshChaturthi:{green:"#c2410c",bg:"#fff7ed",emoji:["🐘","🌺","🪔"]},
+Shivratri:{
+  green:"#0f172a",
+  bg:"#f1f5f9",
+  emoji:["🔱","🕉️","🌙"],
+  message:"🔱 Happy Maha Shivratri 🔱"
+},
 
-Navratri:{green:"#7c3aed",bg:"#faf5ff",emoji:["🪔","💃","🙏"]},
-Dussehra:{green:"#dc2626",bg:"#fff1f2",emoji:["🏹","🔥","🚩"]},
+Holi:{
+  green:"#db2777",
+  bg:"#fff1f2",
+  emoji:["🎨","🌈","💥"],
+  message:"🎨 Happy Holi 🎨"
+},
 
-Diwali:{green:"#b45309",bg:"#fff7ed",emoji:["🪔","✨","🎆"]},
-Govardhan:{green:"#166534",bg:"#f0fdf4",emoji:["🌿","🐄","🙏"]},
-BhaiDooj:{green:"#be185d",bg:"#fdf2f8",emoji:["👫","💖","🪔"]},
+RamNavami:{
+  green:"#ea580c",
+  bg:"#fff7ed",
+  emoji:["🏹","🕉️","🌸"],
+  message:"🏹 Happy Ram Navami 🏹"
+},
 
-GitaJayanti:{green:"#1e293b",bg:"#f8fafc",emoji:["📖","🕉️","🙏"]},
-Christmas:{green:"#166534",bg:"#f0fdf4",emoji:["🎄","⭐","🎁"]},
+HanumanJayanti:{
+  green:"#b91c1c",
+  bg:"#fff7ed",
+  emoji:["🚩","💪","🕉️"],
+  message:"🚩 Happy Hanuman Jayanti 🚩"
+},
+
+Ugadi:{
+  green:"#166534",
+  bg:"#f0fdf4",
+  emoji:["🌿","🥭","🪔"],
+  message:"🌿 Happy Ugadi 🌿"
+},
+
+AkshayaTritiya:{
+  green:"#ca8a04",
+  bg:"#fffbeb",
+  emoji:["💰","🪔","🌸"],
+  message:"💰 Happy Akshaya Tritiya 💰"
+},
+
+BuddhaPurnima:{
+  green:"#0f766e",
+  bg:"#f0fdfa",
+  emoji:["☸️","🕊️","🌕"],
+  message:"☸️ Happy Buddha Purnima ☸️"
+},
+
+RathYatra:{
+  green:"#7c2d12",
+  bg:"#fff7ed",
+  emoji:["🛕","🚩","🙏"],
+  message:"🛕 Happy Rath Yatra 🛕"
+},
+
+GuruPurnima:{
+  green:"#334155",
+  bg:"#f8fafc",
+  emoji:["📿","🙏","🌕"],
+  message:"📿 Happy Guru Purnima 📿"
+},
+
+RakshaBandhan:{
+  green:"#be185d",
+  bg:"#fdf2f8",
+  emoji:["🧵","💖","🎁"],
+  message:"🧵 Happy Raksha Bandhan 🧵"
+},
+
+Janmashtami:{
+  green:"#1e40af",
+  bg:"#eff6ff",
+  emoji:["🦚","🪈","👶"],
+  message:"🦚 Happy Janmashtami 🦚"
+},
+
+GaneshChaturthi:{
+  green:"#c2410c",
+  bg:"#fff7ed",
+  emoji:["🐘","🌺","🪔"],
+  message:"🐘 Happy Ganesh Chaturthi 🐘"
+},
+
+Navratri:{
+  green:"#7c3aed",
+  bg:"#faf5ff",
+  emoji:["🪔","💃","🙏"],
+  message:"🪔 Happy Navratri 🪔"
+},
+
+Dussehra:{
+  green:"#dc2626",
+  bg:"#fff1f2",
+  emoji:["🏹","🔥","🚩"],
+  message:"🏹 Happy Dussehra 🏹"
+},
+
+Diwali:{
+  green:"#b45309",
+  bg:"#fff7ed",
+  emoji:["🪔","✨","🎆"],
+  message:"🪔 Happy Diwali 🪔"
+},
+
+Govardhan:{
+  green:"#166534",
+  bg:"#f0fdf4",
+  emoji:["🌿","🐄","🙏"],
+  message:"🌿 Happy Govardhan Puja 🌿"
+},
+
+BhaiDooj:{
+  green:"#be185d",
+  bg:"#fdf2f8",
+  emoji:["👫","💖","🪔"],
+  message:"👫 Happy Bhai Dooj 👫"
+},
+
+GitaJayanti:{
+  green:"#1e293b",
+  bg:"#f8fafc",
+  emoji:["📖","🕉️","🙏"],
+  message:"📖 Happy Gita Jayanti 📖"
+},
+
+Christmas:{
+  green:"#166534",
+  bg:"#f0fdf4",
+  emoji:["🎄","⭐","🎁"],
+  message:"🎄 Merry Christmas 🎄"
+}
 
 };
 
@@ -370,6 +530,15 @@ function applyTheme(t){
   document.querySelectorAll(".emoji-fg .emoji:not(.permanent)").forEach((e,i)=>{
     e.textContent = th.emoji[i % th.emoji.length];
   });
+
+  // 🎉 Festival message
+  const msgBox = document.getElementById("festivalMessage");
+  if (th.message) {
+    msgBox.textContent = th.message;
+    msgBox.style.display = "block";
+  } else {
+    msgBox.style.display = "none";
+  }
 }
 
 
@@ -382,12 +551,12 @@ function autoFestival(){
   const day = d.getDate();
 
   /* 🇮🇳 NATIONAL DAYS (TOP PRIORITY) */
-  if (m === 1 && day >= 15 && day <= 30) applyTheme("RepublicDay");
+  if (m === 1 && day >= 20 && day <= 30) applyTheme("RepublicDay");
   else if (m === 8 && day >= 1 && day <=15 ) applyTheme("IndependenceDay");
   else if (m === 10 && day === 2) applyTheme("GandhiJayanti");
 
   /* 🪁 JANUARY */
-  else if (m === 1 && day >= 1 && day <= 14) applyTheme("Makar");
+  else if (m === 1 && day >= 10 && day <= 14) applyTheme("Makar");
   else if (m === 1 && day >= 15 && day <= 16) applyTheme("Lohri");
   else if (m === 1 && day >= 16 && day <= 17) applyTheme("Pongal");
 
@@ -643,8 +812,5 @@ addSellerItem();
 
 </body>
 </html>
-
-
-
 
 
