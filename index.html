@@ -2,6 +2,8 @@
 <html lang="gu">
 <head>
 <meta charset="UTF-8">
+<meta name="app-version" content="1.0.0">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ</title>
 
@@ -306,6 +308,34 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 
     <option value="Default">Default theme</option>
   </select>
+</div>
+<div id="updateBanner" style="
+  display:none;
+  position:fixed;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#111827;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+  z-index:9999;
+">
+  🚀 New update available
+  <button onclick="forceUpdate()" style="
+    margin-left:8px;
+    background:#22c55e;
+    border:none;
+    color:#000;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+  ">
+    Update
+  </button>
 </div>
 
 <div style="text-align:center;margin-top:10px;">
@@ -796,6 +826,17 @@ function sendWhatsApp(){
     "_blank"
   );
 }
+const CURRENT_VERSION = document
+  .querySelector('meta[name="app-version"]')
+  ?.getAttribute("content");
+
+const SAVED_VERSION = localStorage.getItem("APP_VERSION");
+
+if (CURRENT_VERSION && CURRENT_VERSION !== SAVED_VERSION) {
+  showUpdateBanner();
+}
+
+localStorage.setItem("APP_VERSION", CURRENT_VERSION);
 
 
 function copyText(){message.select();document.execCommand("copy")}
@@ -814,7 +855,10 @@ function clearAll(){
   farmerMobile.value="";
   MODE!=="buyer" ? addSellerItem() : addBuyerItem();
 }
-
+function showUpdateBanner() {
+    const banner = document.getElementById("updateBanner");
+    if (banner) banner.style.display = "block";
+  }
 window.addEventListener("DOMContentLoaded", autoFestival);
 
 addSellerItem();
@@ -840,6 +884,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
