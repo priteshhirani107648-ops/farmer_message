@@ -909,7 +909,6 @@ function forceUpdate() {
     alert("⚠️ Update not ready. Please go online once.");
   }
 }
-<script>
 async function pickContact() {
   if (!('contacts' in navigator && 'ContactsManager' in window)) {
     alert("Contact picker not supported on this device");
@@ -947,8 +946,6 @@ async function pickContact() {
     alert("Permission denied or cancelled");
   }
 }
-</script>
-
 
 </script>
 <script>
@@ -961,6 +958,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
