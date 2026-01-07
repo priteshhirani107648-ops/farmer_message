@@ -142,6 +142,8 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 </head>
 
 <body>
+  <span id="appVersion" style="display:none;"></span>
+
 <!-- 🌱 BACKGROUND EMOJIS -->
 <div class="emoji-bg">
 <span class="emoji bg" style="left:14%;animation-duration:38s">🍎</span> <span class="emoji bg" style="left:62%;animation-duration:27s">🍏</span> <span class="emoji bg" style="left:88%;animation-duration:41s">🍐</span> <span class="emoji bg" style="left:23%;animation-duration:33s">🍊</span> <span class="emoji bg" style="left:51%;animation-duration:45s">🍋</span> <span class="emoji bg" style="left:76%;animation-duration:29s">🍌</span> <span class="emoji bg" style="left:12%;animation-duration:36s">🍉</span> <span class="emoji bg" style="left:93%;animation-duration:40s">🍇</span> <span class="emoji bg" style="left:44%;animation-duration:31s">🍓</span> <span class="emoji bg" style="left:67%;animation-duration:43s">🫐</span> <span class="emoji bg" style="left:35%;animation-duration:26s">🍈</span> <span class="emoji bg" style="left:19%;animation-duration:44s">🍒</span> <span class="emoji bg" style="left:82%;animation-duration:37s">🍑</span> <span class="emoji bg" style="left:55%;animation-duration:30s">🥭</span> <span class="emoji bg" style="left:28%;animation-duration:42s">🍍</span> <span class="emoji bg" style="left:71%;animation-duration:28s">🥥</span> <span class="emoji bg" style="left:49%;animation-duration:39s">🥝</span> <span class="emoji bg" style="left:10%;animation-duration:40s">🍅</span> <span class="emoji bg" style="left:90%;animation-duration:32s">🍆</span> <span class="emoji bg" style="left:33%;animation-duration:46s">🥑</span> <span class="emoji bg" style="left:60%;animation-duration:25s">🥦</span> <span class="emoji bg" style="left:15%;animation-duration:34s">🥬</span> <span class="emoji bg" style="left:85%;animation-duration:41s">🥒</span> <span class="emoji bg" style="left:41%;animation-duration:35s">🌶️</span> <span class="emoji bg" style="left:77%;animation-duration:27s">🫑</span> <span class="emoji bg" style="left:22%;animation-duration:43s">🌽</span> <span class="emoji bg" style="left:58%;animation-duration:38s">🥕</span> <span class="emoji bg" style="left:94%;animation-duration:26s">🫒</span> 
@@ -915,9 +917,20 @@ if ("serviceWorker" in navigator) {
     .catch(err => console.log("SW failed", err));
 }
 </script>
+<script>
+(function syncAppVersion() {
+  const meta = document.querySelector('meta[name="app-version"]');
+  const span = document.getElementById('appVersion');
+
+  if (meta && span) {
+    span.textContent = meta.content;
+  }
+})();
+</script>
 
 </body>
 </html>
+
 
 
 
