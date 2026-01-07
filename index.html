@@ -308,6 +308,18 @@ textarea{min-height:240px;resize:none;background:#fafafa}
   </select>
 </div>
 
+<div style="text-align:center;margin-top:10px;">
+  <button onclick="forceUpdate()" style="
+    font-size:11px;
+    padding:6px 12px;
+    border-radius:999px;
+    border:1px solid #d1d5db;
+    background:#fff;
+    color:#555;
+  ">
+    🔄 Update offline data
+  </button>
+</div>
 
 <div class="footer">
 Developed by <strong>Pritesh Hirani</strong> | Hirani Tech © <span id="year"></span>
@@ -806,6 +818,15 @@ function clearAll(){
 window.addEventListener("DOMContentLoaded", autoFestival);
 
 addSellerItem();
+function forceUpdate() {
+  if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage("FORCE_UPDATE");
+    alert("Updating app… Please reopen after 5 seconds");
+    setTimeout(() => location.reload(), 3000);
+  } else {
+    alert("Update not available yet. Please go online once.");
+  }
+}
 
 
 </script>
@@ -819,6 +840,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
