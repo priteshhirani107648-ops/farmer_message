@@ -230,6 +230,9 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 </select>
 <input id="buyerOther" class="other" placeholder="ખરીદદારનું નામ લખો">
 <input id="buyerMobile" placeholder="મોબાઇલ નંબર (91XXXXXXXXXX)">
+<button type="button" onclick="pickContact()" class="btn btn-add">
+  📇 Pick from Contacts
+</button>
 
 <div class="header-row">
   <div>શાક</div><div>બોક્સ</div><div>વજન</div>
@@ -903,6 +906,45 @@ function forceUpdate() {
     alert("⚠️ Update not ready. Please go online once.");
   }
 }
+<script>
+async function pickContact() {
+  if (!('contacts' in navigator && 'ContactsManager' in window)) {
+    alert("Contact picker not supported on this device");
+    return;
+  }
+
+  try {
+    const contacts = await navigator.contacts.select(
+      ['name', 'tel'],
+      { multiple: false }
+    );
+
+    if (!contacts.length) return;
+
+    const contact = contacts[0];
+    let phone = contact.tel?.[0] || "";
+
+    // Clean number
+    phone = phone.replace(/\s+/g, "");
+    if (!phone.startsWith("91")) {
+      phone = phone.replace(/^\+/, "");
+    }
+
+    // Auto-fill based on mode
+    if (window.MODE === "buyer") {
+      document.getElementById("buyerMobile").value = phone;
+      document.getElementById("buyerOther").value = contact.name?.[0] || "";
+    } else {
+      document.getElementById("farmerMobile").value = phone;
+      document.getElementById("farmerOther").value = contact.name?.[0] || "";
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Permission denied or cancelled");
+  }
+}
+</script>
 
 
 </script>
@@ -916,6 +958,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
