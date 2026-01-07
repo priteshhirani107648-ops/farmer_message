@@ -353,11 +353,15 @@ textarea{min-height:240px;resize:none;background:#fafafa}
 
 <div class="footer">
 Developed by <strong>Pritesh Hirani</strong> | Hirani Tech © <span id="year"></span>
+<span style="font-size:11px;color:#9ca3af;"> • v<span id="appVer"></span></span>
+
 </div>
 
 </div>
 
 <script>
+document.getElementById("appVer").textContent =
+document.querySelector('meta[name="app-version"]')?.getAttribute("content") || "1.0.0";
 
 
 document.getElementById("year").innerText=new Date().getFullYear();
@@ -598,7 +602,7 @@ function autoFestival(){
   else if (m === 10 && day === 2) applyTheme("GandhiJayanti");
 
   /* 🪁 JANUARY */
-  else if (m === 1 && day >= 10 && day <= 14) applyTheme("Makar");
+  else if (m === 1 && day >= 1 && day <= 14) applyTheme("Makar");
   else if (m === 1 && day >= 15 && day <= 16) applyTheme("Lohri");
   else if (m === 1 && day >= 16 && day <= 17) applyTheme("Pongal");
 
@@ -859,16 +863,44 @@ function showUpdateBanner() {
     const banner = document.getElementById("updateBanner");
     if (banner) banner.style.display = "block";
   }
-window.addEventListener("DOMContentLoaded", autoFestival);
+window.addEventListener("DOMContentLoaded", () => {
+
+  // 🎉 Auto festival theme
+  autoFestival();
+
+  // 🔄 Update banner logic (PREVENT repeat)
+  const CURRENT_VERSION = document
+    .querySelector('meta[name="app-version"]')
+    ?.getAttribute("content");
+
+  const SAVED_VERSION = localStorage.getItem("APP_VERSION");
+
+  if (CURRENT_VERSION && CURRENT_VERSION !== SAVED_VERSION) {
+    showUpdateBanner();
+  }
+
+  if (CURRENT_VERSION) {
+    localStorage.setItem("APP_VERSION", CURRENT_VERSION);
+  }
+
+});
+
 
 addSellerItem();
 function forceUpdate() {
   if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage("FORCE_UPDATE");
-    alert("Updating app… Please reopen after 5 seconds");
-    setTimeout(() => location.reload(), 3000);
+
+    const banner = document.getElementById("updateBanner");
+    if (banner) banner.style.display = "none";
+
+    alert("✅ App updated. Reopening latest version…");
+
+    setTimeout(() => {
+      location.reload(true);
+    }, 2500);
   } else {
-    alert("Update not available yet. Please go online once.");
+    alert("⚠️ Update not ready. Please go online once.");
   }
 }
 
@@ -884,6 +916,7 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+
 
 
 
