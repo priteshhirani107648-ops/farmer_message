@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>404 - પેજ મળ્યું નથી | નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ</title>
+<title>સર્વર ખામી | નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ</title>
 
 <style>
 :root {
@@ -72,41 +72,53 @@ body {
   text-align: center;
 }
 
-.error-code {
-  font-size: 80px;
-  font-weight: 900;
-  color: var(--green);
-  margin: 0;
-  line-height: 1;
+.error-icon {
+  font-size: 70px;
+  margin-bottom: 10px;
 }
 
 .error-title {
-  font-size: 20px;
-  margin: 15px 0 10px;
-  color: var(--text);
+  font-size: 22px;
+  margin: 10px 0;
+  color: var(--danger);
 }
 
 .error-msg {
   font-size: 15px;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.6;
   margin-bottom: 25px;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .btn {
   width: 100%;
   padding: 12px;
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 10px;
   border: none;
   font-weight: 700;
   cursor: pointer;
-  background: var(--green);
-  color: #fff;
   transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.btn:hover {
-  opacity: 0.9;
+.btn:hover { opacity: 0.9; }
+
+.btn-contact {
+  background: #25D366; /* WhatsApp Green */
+  color: #fff;
+}
+.btn-refresh {
+  background: var(--green-light);
+  color: var(--green);
 }
 
 .footer {
@@ -121,22 +133,18 @@ body {
 <body>
 
 <div class="emoji-bg">
-  <span class="emoji bg" style="left:14%;animation-duration:38s">🍎</span>
-  <span class="emoji bg" style="left:62%;animation-duration:27s">🍏</span>
-  <span class="emoji bg" style="left:88%;animation-duration:41s">🍐</span>
-  <span class="emoji bg" style="left:23%;animation-duration:33s">🍊</span>
-  <span class="emoji bg" style="left:51%;animation-duration:45s">🍋</span>
-  <span class="emoji bg" style="left:76%;animation-duration:29s">🍌</span>
-  <span class="emoji bg" style="left:12%;animation-duration:36s">🍉</span>
-  <span class="emoji bg" style="left:93%;animation-duration:40s">🍇</span>
+  <span class="emoji bg" style="left:14%;animation-duration:38s">🛠️</span>
+  <span class="emoji bg" style="left:62%;animation-duration:27s">⚙️</span>
+  <span class="emoji bg" style="left:88%;animation-duration:41s">💻</span>
+  <span class="emoji bg" style="left:23%;animation-duration:33s">🍅</span>
+  <span class="emoji bg" style="left:51%;animation-duration:45s">🔌</span>
+  <span class="emoji bg" style="left:76%;animation-duration:29s">🧅</span>
 </div>
 
 <div class="emoji-fg">
-  <span class="emoji fg" style="left:72%;animation-duration:34s;font-size:2.4rem">🫐</span>
-  <span class="emoji fg" style="left:15%;animation-duration:42s;font-size:1.8rem">🌽</span>
-  <span class="emoji fg" style="left:88%;animation-duration:27s;font-size:2.9rem">🍍</span>
-  <span class="emoji fg" style="left:33%;animation-duration:39s;font-size:1.2rem">🍓</span>
-  <span class="emoji fg" style="left:54%;animation-duration:45s;font-size:2.1rem">🧅</span>
+  <span class="emoji fg" style="left:72%;animation-duration:34s;font-size:2.4rem">⚠️</span>
+  <span class="emoji fg" style="left:15%;animation-duration:42s;font-size:1.8rem">🔧</span>
+  <span class="emoji fg" style="left:33%;animation-duration:39s;font-size:1.2rem">🥔</span>
 </div>
 
 <div class="app">
@@ -145,13 +153,22 @@ body {
   </div>
 
   <div class="card">
-    <div style="font-size: 60px; margin-bottom: 10px;">🤷‍♂️🍅</div>
-    <h1 class="error-code">404</h1>
-    <h2 class="error-title">ઓહ! પેજ મળ્યું નથી.</h2>
+    <div class="error-icon">👨‍💻💥</div>
+    <h2 class="error-title">ઓહ! સર્વરમાં થોડી ખામી છે.</h2>
     <p class="error-msg">
-      લાગે છે કે તમે જે પેજ શોધી રહ્યા છો તે ક્યાંક સંતાઈ ગયું છે અથવા અહીં ઉપલબ્ધ નથી!
+      માફ કરશો, અમારી સિસ્ટમમાં કોઈ ટેકનિકલ સમસ્યા આવી છે .<br><br>
+      અમારા ડેવલપર આને સુધારવા માટે કામ કરી રહ્યા છે. જો સમસ્યા ચાલુ રહે, તો કૃપા કરીને ડેવલપરનો સંપર્ક કરો.
     </p>
-    <button class="btn" onclick="window.location.href='index.html'">🏠 હોમ પેજ પર પાછા જાઓ</button>
+    
+    <div class="btn-group">
+      <button class="btn btn-contact" onclick="contactDev()">
+        💬 ડેવલપરને WhatsApp કરો
+      </button>
+      
+      <button class="btn btn-refresh" onclick="window.location.reload()">
+        🔄 પેજ રિફ્રેશ કરો
+      </button>
+    </div>
   </div>
 
   <div class="footer">
@@ -161,6 +178,14 @@ body {
 
 <script>
   document.getElementById("year").innerText = new Date().getFullYear();
+
+  function contactDev() {
+    // અહી તમારો વોટ્સએપ નંબર ઉમેરો (દા.ત. 919876543210)
+    let devNumber = "919687575039"; 
+    let message = "નમસ્તે Pritesh, નીલકંઠ ફ્રૂટ એન્ડ વેજીટેબલ એપમાં મને એક ટેકનિકલ ખામી (Server Error) દેખાઈ રહી છે. કૃપા કરીને ચેક કરો.";
+    
+    window.open(`https://wa.me/${devNumber}?text=${encodeURIComponent(message)}`, "_blank");
+  }
 </script>
 
 </body>
