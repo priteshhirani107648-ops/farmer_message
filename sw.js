@@ -4,6 +4,7 @@ const FILES_TO_CACHE = [
   "./index.html"
 ];
 
+
 // Install
 self.addEventListener("install", event => {
   self.skipWaiting();
